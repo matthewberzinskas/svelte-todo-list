@@ -1,13 +1,17 @@
 <script>
-  export let todo;
-
+  import { tick } from "svelte";
   import { createEventDispatcher } from "svelte";
+  import { selectOnFocus } from "../actions.js";
+
+  export let todo;
   const dispatch = createEventDispatcher();
 
   //Track editing mode
   let editing = false;
   //Hold name of the to-do
   let name = todo.name;
+
+  let nameEl;
 
   function update(updatedTodo) {
     todo = { ...todo, ...updatedTodo };
@@ -28,9 +32,16 @@
     dispatch("remove", todo);
   }
 
+  const focusOnInit = (node) =>
+    node && typeof node.focus === "function" && node.focus();
+
+  let editButtonPressed = false;
   function onEdit() {
+    editButtonPressed = true
     editing = true;
   }
+
+  const focusEditButton = (node) => editButtonPressed && node.focus()
 
   function onToggle() {
     update({ completed: !todo.completed });
@@ -51,6 +62,8 @@
         >
         <input
           bind:value={name}
+          use:selectOnFocus
+          use:focusOnInit
           type="text"
           id="todo-{todo.id}"
           autoComplete="off"
