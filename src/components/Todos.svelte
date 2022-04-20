@@ -1,25 +1,53 @@
 <script>
-  export let todos = []
+  export let todos = [];
 
-  let totalTodos = todos.length
-  let completedTodos = todos.filter(todo => todo.completed).length
+  $: totalTodos = todos.length;
+  $: completedTodos = todos.filter((todo) => todo.completed).length;
 
-  console.log("Total Todos: "+totalTodos)
+  let newTodoName = "";
+  let newTodoId;
+  $: {
+    if (totalTodos === 0) {
+      newTodoId = 1;
+    } else {
+      newTodoId = Math.max(...todos.map((t) => t.id)) + 1;
+    }
+  }
+  function addTodo() {
+    todos.push([
+      ...todos,
+      { id: newTodoId, name: newTodoName, completed: false },
+    ]);
+    newTodoName = "";
+  }
 
   function removeTodo(todo) {
     todos = todos.filter((t) => t.id !== todo.id);
   }
 
+  let filter = "all";
+  const filterTodos = (filter, todos) =>
+    filter === "active"
+      ? todos.filter((t) => !t.completed)
+      : filter === "completed"
+      ? todos.filter((t) => t.completed)
+      : todos;
 </script>
 
 <!-- Todos.svelte -->
 <div class="todoapp stack-large">
   <!-- NewTodo -->
-  <form>
+  <form on:submit|preventDefault={addTodo}>
     <h2 class="label-wrapper">
       <label for="todo-0" class="label__lg"> What needs to be done? </label>
     </h2>
-    <input type="text" id="todo-0" autocomplete="off" class="input input__lg" />
+    <input
+      bind:value={newTodoName}
+      type="text"
+      id="todo-0"
+      autocomplete="off"
+      class="input input__lg"
+    />
     <button type="submit" disabled="" class="btn btn__primary btn__lg">
       Add
     </button>
@@ -27,17 +55,32 @@
 
   <!-- Filter -->
   <div class="filters btn-group stack-exception">
-    <button class="btn toggle-btn" aria-pressed="true">
+    <button
+      class="btn toggle-btn"
+      class:btn_primary={filter === "all"}
+      aria-pressed={filter === "all"}
+      on:click={() => (filter = "all")}
+    >
       <span class="visually-hidden">Show</span>
       <span>All</span>
       <span class="visually-hidden">tasks</span>
     </button>
-    <button class="btn toggle-btn" aria-pressed="false">
+    <button
+      class="btn toggle-btn"
+      class:btn_primary={filter === "active"}
+      aria-pressed={filter === "active"}
+      on:click={() => (filter = "active")}
+    >
       <span class="visually-hidden">Show</span>
       <span>Active</span>
       <span class="visually-hidden">tasks</span>
     </button>
-    <button class="btn toggle-btn" aria-pressed="false">
+    <button
+      class="btn toggle-btn"
+      class:btn_primary={filter === "completed"}
+      aria-pressed={filter === "completed"}
+      on:click={() => (filter = "completed")}
+    >
       <span class="visually-hidden">Show</span>
       <span>Completed</span>
       <span class="visually-hidden">tasks</span>
@@ -51,7 +94,7 @@
 
   <!-- To-dos -->
   <ul class="todo-list stack-large" aria-labelledby="list-heading">
-    {#each todos as todo (todo.id)}
+    {#each filterTodos(filter, todos) as todo (todo.id)}
       <li class="todo">
         <div class="stack-small">
           <div class="c-cb">
