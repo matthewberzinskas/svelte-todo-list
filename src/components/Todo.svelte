@@ -37,11 +37,11 @@
 
   let editButtonPressed = false;
   function onEdit() {
-    editButtonPressed = true
+    editButtonPressed = true;
     editing = true;
   }
 
-  const focusEditButton = (node) => editButtonPressed && node.focus()
+  const focusEditButton = (node) => editButtonPressed && node.focus();
 
   function onToggle() {
     update({ completed: !todo.completed });
