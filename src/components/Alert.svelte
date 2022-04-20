@@ -38,10 +38,10 @@
   div p {
     color: #fff;
   }
-  div svg {
+/*   div svg {
     height: 1.6rem;
     fill: currentColor;
     width: 1.4rem;
     margin-right: 0.5rem;
-  }
+  } */
 </style>
