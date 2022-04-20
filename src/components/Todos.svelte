@@ -1,23 +1,14 @@
 <script>
   import Todo from "./Todo.svelte";
+  import TodosStatus from "./TodosStatus.svelte";
   import FilterButton from "./FilterButton.svelte";
   import MoreActions from "./MoreActions.svelte";
   import NewTodo from "./NewTodo.svelte";
 
   export let todos = [];
+  $: newTodoId = todos.length ? Math.max(...todos.map((t) => t.id)) + 1 : 1;
 
-  $: totalTodos = todos.length;
-  $: completedTodos = todos.filter((todo) => todo.completed).length;
-
-  let newTodoName = "";
-  let newTodoId;
-  $: {
-    if (totalTodos === 0) {
-      newTodoId = 1;
-    } else {
-      newTodoId = Math.max(...todos.map((t) => t.id)) + 1;
-    }
-  }
+  let todosStatus;
 
   function addTodo(name) {
     todos = [...todos, { id: newTodoId, name, completed: false }];
@@ -25,6 +16,7 @@
 
   function removeTodo(todo) {
     todos = todos.filter((t) => t.id !== todo.id);
+    todosStatus.focus(); // give focus to status heading
   }
 
   function updateTodo(todo) {
@@ -60,9 +52,7 @@
   <FilterButton bind:filter />
 
   <!-- TodosStatus -->
-  <h2 id="list-heading">
-    {completedTodos} out of {totalTodos} items completed
-  </h2>
+  <TodosStatus bind:this={todosStatus} {todos} />
 
   <!-- To-dos -->
   <ul class="todo-list stack-large" aria-labelledby="list-heading">
