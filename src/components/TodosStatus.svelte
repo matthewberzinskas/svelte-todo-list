@@ -1,3 +1,4 @@
+<!-- components/TodosStatus.svelte -->
 <script>
   export let todos;
 
@@ -6,10 +7,7 @@
 
   let headingEl;
 
-  export function focus() {
-    // shorter version: export const focus = () => headingEl.focus()
-    headingEl.focus();
-  }
+  export const focus = () => headingEl.focus();
 </script>
 
 <h2 id="list-heading" bind:this={headingEl} tabindex="-1">

@@ -1,51 +1,49 @@
+<!-- components/Todo.svelte -->
 <script>
-  import { tick } from "svelte";
   import { createEventDispatcher } from "svelte";
+  const dispatch = createEventDispatcher();
+
   import { selectOnFocus } from "../actions.js";
 
   export let todo;
-  const dispatch = createEventDispatcher();
 
-  //Track editing mode
-  let editing = false;
-  //Hold name of the to-do
-  let name = todo.name;
+  let editing = false; // track editing mode
+  let editButtonPressed = false; // track if edit button has been pressed, to give focus to it after cancel or save
 
-  let nameEl;
+  let name = todo.name; // hold the name of the todo being edited
 
   function update(updatedTodo) {
-    todo = { ...todo, ...updatedTodo };
-    dispatch("update", todo);
+    todo = { ...todo, ...updatedTodo }; // applies modifications to todo
+    dispatch("update", todo); // emit update event
   }
 
   function onCancel() {
-    name = todo.name;
-    editing = false;
+    name = todo.name; // restores name to its initial value
+    editing = false; // and exit editing mode
   }
 
   function onSave() {
-    update({ name: name });
-    editing = false;
+    update({ name: name }); // updates todo name
+    editing = false; // and exit editing mode
   }
 
   function onRemove() {
-    dispatch("remove", todo);
+    dispatch("remove", todo); // emit remove event
+  }
+
+  function onEdit() {
+    editButtonPressed = true; // when Cancel or Save is pressed, focus should go back to the Edit button
+    editing = true; // enter editing mode
+  }
+
+  function onToggle() {
+    update({ completed: !todo.completed }); // updates todo status
   }
 
   const focusOnInit = (node) =>
     node && typeof node.focus === "function" && node.focus();
 
-  let editButtonPressed = false;
-  function onEdit() {
-    editButtonPressed = true;
-    editing = true;
-  }
-
   const focusEditButton = (node) => editButtonPressed && node.focus();
-
-  function onToggle() {
-    update({ completed: !todo.completed });
-  }
 </script>
 
 <div class="stack-small">
@@ -95,7 +93,7 @@
       <label for="todo-{todo.id}" class="todo-label">{todo.name}</label>
     </div>
     <div class="btn-group">
-      <button type="button" class="btn" on:click={onEdit}>
+      <button type="button" class="btn" on:click={onEdit} use:focusEditButton>
         Edit<span class="visually-hidden"> {todo.name}</span>
       </button>
       <button type="button" class="btn btn__danger" on:click={onRemove}>

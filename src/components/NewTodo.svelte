@@ -1,26 +1,27 @@
+<!-- components/NewTodo.svelte -->
 <script>
-  import { selectOnFocus } from "../actions.js";
-  import { createEventDispatcher } from "svelte";
+  import { createEventDispatcher, onMount } from "svelte";
   const dispatch = createEventDispatcher();
+
+  import { selectOnFocus } from "../actions.js";
 
   export let autofocus = false;
 
   let name = "";
-  let nameEl;
-
-  import { onMount } from "svelte";
-  onMount(() => autofocus && nameEl.focus());
+  let nameEl; // reference to the name input DOM node
 
   const addTodo = () => {
     dispatch("addTodo", name);
     name = "";
-    nameEl.focus();
+    nameEl.focus(); // give focus to the name input
   };
 
   const onCancel = () => {
     name = "";
-    nameEl.focus();
+    nameEl.focus(); // give focus to the name input
   };
+
+  onMount(() => autofocus && nameEl.focus()); // if autofocus is true, we run nameEl.focus()
 </script>
 
 <form
@@ -39,7 +40,7 @@
     autoComplete="off"
     class="input input__lg"
   />
-  <button type="submit" disabled={!name} class="btn btn__primary___lg"
+  <button type="submit" disabled={!name} class="btn btn__primary btn__lg"
     >Add</button
   >
 </form>
