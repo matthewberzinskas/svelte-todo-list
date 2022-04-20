@@ -1,50 +1,40 @@
-<h1>Svelte to-do list</h1>
-
 <!-- Todos.svelte -->
 <div class="todoapp stack-large">
-  <!-- Form for new ToDo Task -->
+  <!-- NewTodo -->
   <form>
     <h2 class="label-wrapper">
       <label for="todo-0" class="label__lg"> What needs to be done? </label>
     </h2>
-
-    <input
-      type="text"
-      id="todo-0"
-      autocomplete="off"
-      class="inpute inpute__lg"
-    />
+    <input type="text" id="todo-0" autocomplete="off" class="input input__lg" />
     <button type="submit" disabled="" class="btn btn__primary btn__lg">
       Add
     </button>
   </form>
 
-  <!-- Filter element for ToDo Tasks -->
+  <!-- Filter -->
   <div class="filters btn-group stack-exception">
     <button class="btn toggle-btn" aria-pressed="true">
       <span class="visually-hidden">Show</span>
       <span>All</span>
       <span class="visually-hidden">tasks</span>
     </button>
-
     <button class="btn toggle-btn" aria-pressed="false">
       <span class="visually-hidden">Show</span>
       <span>Active</span>
       <span class="visually-hidden">tasks</span>
     </button>
-
-    <button class="btn toggle-btn" aria-pressed="true">
+    <button class="btn toggle-btn" aria-pressed="false">
       <span class="visually-hidden">Show</span>
       <span>Completed</span>
       <span class="visually-hidden">tasks</span>
     </button>
   </div>
 
-  <!-- Status of ToDo Tasks-->
+  <!-- TodosStatus -->
   <h2 id="list-heading">2 out of 3 items completed</h2>
 
-  <!-- ToDo Tasks -->
-  <ul class="todo-list statck-large" aria-labelledby="list-heading">
+  <!-- Todos -->
+  <ul class="todo-list stack-large" aria-labelledby="list-heading">
     <!-- todo-1 (editing mode) -->
     <li class="todo">
       <div class="stack-small">
@@ -53,7 +43,6 @@
             <label for="todo-1" class="todo-label">
               New name for 'Create a Svelte starter app'
             </label>
-
             <input
               type="text"
               id="todo-1"
@@ -64,14 +53,15 @@
           <div class="btn-group">
             <button class="btn todo-cancel" type="button">
               Cancel
-              <span clas="visually-hidden">
-                renaming Create a Svelte starter app</span>
+              <span class="visually-hidden"
+                >renaming Create a Svelte starter app</span
+              >
             </button>
             <button class="btn btn__primary todo-edit" type="submit">
               Save
-              <span class="visually-hidden">
-                new name for Create a Svelte starter app
-              </span>
+              <span class="visually-hidden"
+                >new name for Create a Svelte starter app</span
+              >
             </button>
           </div>
         </form>
@@ -88,8 +78,8 @@
           </label>
         </div>
         <div class="btn-group">
-          <button type="button" class="btn"
-            >Edit
+          <button type="button" class="btn">
+            Edit
             <span class="visually-hidden">Create your first component</span>
           </button>
           <button type="button" class="btn btn__danger">
@@ -112,18 +102,21 @@
         <div class="btn-group">
           <button type="button" class="btn">
             Edit
-            <span class="visually-hidden">
-              Complete the rest of the tutorial</span>
+            <span class="visually-hidden"
+              >Complete the rest of the tutorial</span
+            >
           </button>
           <button type="button" class="btn btn__danger">
             Delete
             <span class="visually-hidden"
-              >Complete the rest of the tutorial</span>
+              >Complete the rest of the tutorial</span
+            >
           </button>
         </div>
       </div>
     </li>
   </ul>
+
   <hr />
 
   <!-- MoreActions -->
